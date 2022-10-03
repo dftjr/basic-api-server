@@ -2,13 +2,12 @@
 
 const logger = require('../src/middleware/logger.js');
 
-describe('Testing logger middleware', () => {
+describe('Testing logger middle', () => {
   test('Should log something when invoked', () => {
     jest.spyOn(console, 'log');
     let request = {
       method: 'TEST',
-      path: 'TEST',
-      query: 'TEST',
+      path: 'PATH',
     };
     const response = {};
     const next = jest.fn();

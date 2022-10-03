@@ -1,9 +1,9 @@
 'use strict';
 
 function validator(request, response, next) {
-  if (request.query.name && request.query.quantity)
+  if (request.query.name)
     next();
-  if (!request.query.name || request.query.quantity)
+  if (!request.query.name)
     next('No name on request');
 }
 

@@ -1,23 +1,23 @@
 'use strict';
 
 const express = require('express');
-const router = express.Router();
 const { Food } = require('../models');
+const router = express.Router();
 
-router.get('/food', getFood);
-router.get('/food/:id', getOneFood);
+router.get('/food', readFood);
+router.get('/food/:id', readOneFood);
 router.post('/food', createFood);
-router.put('/food/:id', updateFood);
-router.delete('/food/:id', deleteFood);
+router.put('/food:id', updateFood);
+router.delete('/food:id', deleteFood);
 
-async function getFood(request, response, next) {
+async function readFood(request, response, next) {
   let foodRecords = await Food.read();
   response.status(200);
   response.send(foodRecords);
 }
 
-async function getOneFood(request, response, next) {
-  let foodRecord = await Food.read(request.params.id);
+async function readOneFood(request, response, next) {
+  let foodRecord = await Food.read({ where: { id: request.params.id } });
   response.status(200);
   response.send(foodRecord);
 }
@@ -29,15 +29,15 @@ async function createFood(request, response, next) {
 }
 
 async function updateFood(request, response, next) {
-  let foodRecord = await Food.update(request.params.id);
+  let foodRecord = await Food.update(request.body, {where: { id: request.params.id } });
   response.status(200);
   response.send(foodRecord);
 }
 
 async function deleteFood(request, response, next) {
-  let foodRecord = await Food.delete(request.params.id);
+  await Food.destroy({ where: { id: request.params.id } });
   response.status(200);
-  response.send(foodRecord);
+  response.send(`Id ${request.params.id} deleted`);
 }
 
 module.exports = router;
