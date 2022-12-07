@@ -1,9 +1,9 @@
 'use strict';
 
 function validator(request, response, next) {
-  if (request.query.name)
+  if (request.body.foodName)
     next();
-  if (!request.query.name)
+  if (!request.body.foodName)
     next('No name on request');
 }
 
