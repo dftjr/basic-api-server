@@ -3,9 +3,8 @@
 const foodSchema = (sequelize, DataTypes) => sequelize.define(
   'Food',
   {
-    name: {
+    foodName: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
   },
 );

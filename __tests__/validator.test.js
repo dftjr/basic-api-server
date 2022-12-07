@@ -8,54 +8,60 @@ beforeAll(async () => {
   await db.sync();
 });
 
-
-describe('Testing Validator', () => {
-  test('Should respond with 200 if the name is in the query string', async () => {
-    const response = await request.get('/food?name=Beef');
-    expect(response.status).toEqual(200);
-    expect(response.body.name).toEqual('Beef');
+describe('Testing the 404 error handling', () => {
+  test('Should respond with a 404 for incorrect method', async () => {
+    const response = await request.post('/incorrectMethod');
+    expect(response.status).toEqual(404);
   });
-  test('Should respond with 500 if no name in the query string', async () => {
-    const response = await request.get('/food');
-    expect(response.status).toEqual(500);
+
+  test('Should respond with a 404 for incorrect route', async () => {
+    const response = await request.get('/incorrectRoute');
+    expect(response.status).toEqual(404);
   });
 });
 
-describe('Testing POST models', () => {
-  test('Should create a single food', async () => {
-    let food = await Food.create({
-      name: 'Beef',
+describe('Testing POST food route', () => {
+  test('Should create a single food item', async () => {
+    const response = await request.post('/food').send({
+      foodName: 'nameTest1',
     });
-    expect(food.id).toBeTruthy();
-    expect(food.name).toEqual('Beef');
+    expect(response.status).toEqual(200);
+    expect(response.body.foodName).toEqual('nameTest1');
   });
 });
 
-describe('Testing GET models', () => {
-  test('Should read from our food table', async () => {
-    let food = await Food.findAll();
-    console.log(food);
-    expect(food.length).toBeTruthy();
+describe('Testing GET food routes', () => {
+  test('Should read all food items', async () => {
+    const response = await request.get('/food');
+    expect(response.status).toEqual(200);
+    expect(Array.isArray(response.body)).toEqual(true);
   });
 
-  test('Should read a single food', async () => {
-    let food = await Food.findOne({ where: { id: 1 }});
-    expect(food.name).toEqual('Beef');
+  test('Should read a single food item', async () => {
+    const response = await request.get('/food/1');
+    expect(response.status).toEqual(200);
+    expect(response.body.foodName).toEqual('nameTest1');
   });
 });
 
-describe('Testing PUT models', () => {
-  test('Should update a single food', async () => {
-    await Food.update({ name: 'Beef' },{ where: { id: 1 }});
-    let food = await Food.findOne({ where: { id: 1 }});
-    expect(food.name).toEqual('Beef');
+
+describe('Testing PUT food route', () => {
+  test('Should update a single food item', async () => {
+    await request.put('/food/1').send({
+      foodName: 'nameTest1Updated',
+    });
+    const response = await request.get('/food/1');
+    expect(response.status).toEqual(200);
+    expect(response.body.id).toEqual(1);
+    expect(response.body.foodName).toEqual('nameTest1Updated');
   });
 });
 
-describe('Testing DELETE models', () => {
-  test('Should be able to destroy a food', async () => {
-    await Food.destroy({ where: { id: 1 }});
-    let food = await Food.findOne({ where: { id: 1 }});
-    expect(food).not.toBeTruthy();
+describe('Testing DELETE food route', () => {
+  test('Should delete a single food item', async () => {
+    await request.delete(`/food/1`);
+    const foodRecord = await Food.findOne({ where: { id : 1}});
+    expect(foodRecord).not.toBeTruthy();
   });
 });
+
