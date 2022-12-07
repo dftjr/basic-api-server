@@ -8,7 +8,7 @@
 
 # Install and Test Instructions
 
-Step 1: Git clone [Repo Link](https://github.com/dftjr/basic-api-server.git)
+Step 1: Git clone [Repo Link](https://dftjr-basic-api-server.herokuapp.com)
 
 Step 2: Install the nodes <code>npm i</code>
 
@@ -16,7 +16,7 @@ Step 3: Run the tests <code>npm test</code>
 
 Step 4: Check to see that the code is passing, should look the the following picture below:
 
-<img src="test.png" alt="Test Picture" width="300" height="100"/>
+<img src="./img/lab-03-jest.jpg" alt="Test Picture" width="300" height="100"/>
 
 Step 5: Set-up your .env PORT path to whatever you prefer
 
@@ -181,7 +181,7 @@ sequelize.sync(); // creates tables from all schemas associated with our sequeli
 sequelize.drop(); // removes tables and records.
 ```
 
-#### Perform Basic SQL Operations  
+#### Perform Basic SQL Operations
 
 ```javascript
 
@@ -207,26 +207,26 @@ Food.findAll();  // Reads a record where the id matches.
 
 When we deploy our applications we won't be able to access our local postgres database so we need to connect to a machine running Postgres in the cloud.  This will allow us to always have a running instance of Postgres, with better hardware, more memory and faster network speeds.  Heroku allows us to set up Postgres data directly through the Heroku CLI.  Once set up, we can use a url much like we've been using to connect our application to our database.
 
-1. Log Into your Heroku Account.  
+1. Log Into your Heroku Account.
 
 1. Create / Update your Heroku Application.
-   - If you haven't already, Create a Heroku Application.  
+   - If you haven't already, Create a Heroku Application.
 
-- If your Heroku App is already created just select your App from the Dashboard.  
+- If your Heroku App is already created just select your App from the Dashboard.
 
 1. Add `Heroku Postgres` from the `Resources` tab from the Application View.
 
-- Type `Heroku Postgres` in the `Add-ons` section.  
+- Type `Heroku Postgres` in the `Add-ons` section.
 
 - After selecting the Add-on, Choose the `Hobby Dev-Free` plan and submit the form.
-- 
+-
 1. Confirm that you have an Environment Variable set for your Postgres Database.
    - Click on `Settings` from the Application View
 
 - Under the `Config Vars` you should see a field for `DATABASE_URL` with a postgres connection string as it's value.
 
 1. Add your DATABASE_URL to your Application!
-   - Make sure you are able to access environment specific variables within your source code.  
+   - Make sure you are able to access environment specific variables within your source code.
 
 ```javascript
 require('dotenv').config();
